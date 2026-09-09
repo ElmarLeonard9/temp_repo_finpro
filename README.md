@@ -72,7 +72,7 @@ Standard evaluation metrics (e.g., Accuracy, ROC-AUC) fail under severe class im
 │   │
 │   └── Supporting Data          <- External geolocation reference data for imputing missing Brazilian ZIP codes (CEP), cities, states, and coordinates.
 │
-├── notebooks                  
+├── notebooks                
 │   ├── 1_Data Preparation       <- Data merging, cleaning, and missing imputation.
 │   │
 │   ├── 2_Business Understanding <- Problem framing, financial cost asymmetry modeling (FP vs. FN), and metric strategy selection.
@@ -88,10 +88,45 @@ Standard evaluation metrics (e.g., Accuracy, ROC-AUC) fail under severe class im
 └── requirements.txt             <- Dependencies file for reproducing the Python execution environment.
 ```
 
-
-
 ## 5. Summary of Findings
 
 ### 5.1 Business Insights
 
+* **Model Performance & Screening Function:** The tuned **LightGBM (SMOTE)** model operates at a calibrated threshold of  **0.076** , achieving  **87% Recall** ,  **13% Precision** , an  **F1-score of 0.230** , and a  **PR-AUC of 0.242** . Rather than serving as a rigid final classifier, the model acts as an effective high-sensitivity screening tool—flagging 9,817 out of 19,110 validation orders (531 True Positives) to capture the vast majority of late risks early in the fulfillment cycle.
+* **Financial Impact & Customer Satisfaction Recovery:** Implementing proactive intervention on flagged high-risk orders generates  **R$15,793.24 in Net Value** . Crucially, managing customer expectations and mitigating fulfillment delays boosts average customer review scores for impacted orders by  **32.26%** , increasing satisfaction ratings from  **3.01 to 3.98 stars** .
+* **Key Risk Drivers (SHAP Analysis):**
+
+  * **Promised Days:** Tightly constrained promised delivery windows represent the single strongest driver pushing predictions toward late status.
+  * **Historical Seller Late Rate:** Sellers with past dispatch delays consistently drive higher risk for new orders.
+  * **Total Freight Value:** Higher freight costs serve as a proxy for heavier or bulkier items, which suffer from greater handling complexity and transit delays.
+  * **Seasonal Vulnerabilities:** Orders placed in **February** (coinciding with Brazil's National Carnival road closures) and **November** (Black Friday logistics volume surges) exhibit significantly higher late delivery rates compared to mid-year months (June–August).
+
 ### 5.2 Actionable Recommendations
+
+**Proactive Operational Workflow**
+
+* Automated Risk Flagging: Deploy the LightGBM screening pipeline at order approval (order_approved_at) to instantly flag high-risk orders.
+* Merchant Expedited Alerts: Trigger automated WhatsApp or seller dashboard notifications requesting immediate item packaging and carrier handoff.
+
+* Carrier Shipment Tracking: Monitor flagged shipments and coordinate directly with logistics partners prior to SLA breaches.
+* Dynamic SLA Recalibration: When dispatch or transit delays are unavoidable, dynamically add buffer days to the estimated delivery timeline based on geographic transit distance:
+
+| **Transit Distance Category**     | **Added SLA Days** |
+| --------------------------------------- | ------------------------ |
+| **Short Range (<50 km)**          | +4 Days                  |
+| **Regional (50–300 km)**         | +5 Days                  |
+| **Interregional (300–1,000 km)** | +7 Days                  |
+| **Long-Haul (>1,000 km)**         | +8 Days                  |
+
+
+
+**Future Model Enhancements**
+
+* **Seasonal Disruption Flags:** Incorporate seasonal calendar indicators and localized road closure data to account for predictable events like Brazil's Carnival street closures.
+* **Purchase-Time Weather Data:** Integrate real-time weather forecast API feeds captured at the exact timestamp of order purchase to account for regional storm or flooding delays.
+* **Terrain & Infrastructure Profiling:** Feature-engineer road quality indexes, urban/rural destination classifications, and elevation metrics to better distinguish accessible transit routes from difficult terrains.
+* **3PL Carrier Integration:** Establish data-sharing agreements with third-party logistics partners to integrate real-time carrier performance metrics and vehicle capacity constraints into the feature pipeline.
+
+# Appendix
+
+Visit our dashboard at ([public.tableau.com/views/Olist-Dashboard_17882680567370/Overview?:language=en-US&amp;publish=yes&amp;:sid=&amp;:redirect=auth&amp;:display_count=n&amp;:origin=viz_share_link](https://public.tableau.com/views/Olist-Dashboard_17882680567370/Overview?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link))
