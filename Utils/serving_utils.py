@@ -76,6 +76,10 @@ def attach_seller_late_rate_frozen(items_df, lookup, global_rate):
 # Standalone feature helpers
 # ---------------------------------------------------------------------------
 
+def convert_bool_to_int(df):
+    """Used inside preprocessor's boolean_pipeline (a FunctionTransformer)."""
+    return df.astype(int)
+
 def calculate_haversine(lon1, lat1, lon2, lat2):
     """Great-circle distance in km between two lat/lon points."""
     lon1, lat1, lon2, lat2 = map(np.radians, [lon1, lat1, lon2, lat2])
