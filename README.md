@@ -105,11 +105,11 @@ Standard evaluation metrics (e.g., Accuracy, ROC-AUC) fail under severe class im
 
 **Proactive Operational Workflow**
 
-* Automated Risk Flagging: Deploy the LightGBM screening pipeline at order approval (order_approved_at) to instantly flag high-risk orders.
-* Merchant Expedited Alerts: Trigger automated WhatsApp or seller dashboard notifications requesting immediate item packaging and carrier handoff.
+* Flag high-risk order: Use the predictive model to identify orders with a high probability of late delivers.
+* Notify sellers: Send an automated notification to the seller and request immediate action to prevent further delays.
 
-* Carrier Shipment Tracking: Monitor flagged shipments and coordinate directly with logistics partners prior to SLA breaches.
-* Dynamic SLA Recalibration: When dispatch or transit delays are unavoidable, dynamically add buffer days to the estimated delivery timeline based on geographic transit distance:
+* Track shipment & contact logistics partners: Monitor the flagged shipment and coordinate with the logistics partner when the delivery is at risk of exceeding the promised date
+* Adjust delivery expectations when necessary: When a delay cannot be prevented, update the estimated delivery timeline to provide a more realistic expectation and reduce unexpected customer dissatisfaction. This is done by adjusting the estimated delivery days with adding extra days to the estimated delivery day based on distance.
 
 | **Transit Distance Category**     | **Added SLA Days** |
 | --------------------------------------- | ------------------------ |
@@ -122,10 +122,10 @@ Standard evaluation metrics (e.g., Accuracy, ROC-AUC) fail under severe class im
 
 **Future Model Enhancements**
 
-* **Seasonal Disruption Flags:** Incorporate seasonal calendar indicators and localized road closure data to account for predictable events like Brazil's Carnival street closures.
-* **Purchase-Time Weather Data:** Integrate real-time weather forecast API feeds captured at the exact timestamp of order purchase to account for regional storm or flooding delays.
-* **Terrain & Infrastructure Profiling:** Feature-engineer road quality indexes, urban/rural destination classifications, and elevation metrics to better distinguish accessible transit routes from difficult terrains.
-* **3PL Carrier Integration:** Establish data-sharing agreements with third-party logistics partners to integrate real-time carrier performance metrics and vehicle capacity constraints into the feature pipeline.
+* **Traffic and Seasonal Road Disruption Data:** Incorporate seasonal calendar indicators and localized road closure data to account for predictable events like Brazil's Carnival street closures.
+* **Real-Time Weather Forecast Data:** Integrate real-time weather forecast API feeds captured at the exact timestamp of order purchase to account for regional storm or flooding delays.
+* **Infrastructure and Terrain Profiling:** Feature-engineer road quality indexes, urban/rural destination classifications, and elevation metrics to better distinguish accessible transit routes from difficult terrains.
+* **Logistics Partner and Carrier Metrics:** Establish data-sharing agreements with third-party logistics partners to integrate real-time carrier performance metrics and vehicle capacity constraints into the feature pipeline.
 
 # Appendix
 
