@@ -25,11 +25,11 @@ import streamlit as st
 import os
 import sys
 
-sys.path.append(os.path.abspath("..")) 
-
+APP_DIR = Path(__file__).resolve().parent.parent
+if str(APP_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_DIR))
+ 
 from Utils.serving_utils import ServingModel
-
-APP_DIR = Path(__file__).parent.parent
 
 # ---------------------------------------------------------------------------
 # Config / constants
